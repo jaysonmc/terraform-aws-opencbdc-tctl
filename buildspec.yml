@@ -4,13 +4,13 @@ env:
   secrets-manager:
     github_token: "arn:aws:secretsmanager:us-east-1:252265768975:secret:jaysosmc_github_access_token-tdzfcN"
 phases:
-  pre-build:
+  install:
     commands:
       - ls
       - s3 cp $s3_terraform 
       - yum install unzip
       - unzip terraform_*.zip
       - terraform version
-  build:
+  pre_build:
     commands:
       - terraform plan -var "test_controller_github_access_token=$github_token"
