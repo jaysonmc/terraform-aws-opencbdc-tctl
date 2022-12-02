@@ -7,7 +7,7 @@ phases:
   install:
     commands:
       - ls
-      - s3 cp $s3_terraform 
+      - aws s3 cp $s3_terraform 
       - yum install unzip
       - unzip terraform_*.zip
       - terraform version
