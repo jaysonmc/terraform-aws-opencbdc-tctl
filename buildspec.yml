@@ -18,4 +18,5 @@ phases:
       - export TF_VAR_lets_encrypt_email=$lets_encrypt_email
       - export TF_VAR_base_domain=$dns_base_domain
       - export TF_VAR_test_controller_github_access_token=$github_token
-      - terraform plan -out $s3_terraform_plan
+      - terraform plan -out ./tf-test.plan
+      - aws s3 cp ./tf-test.plan $s3_terraform_plan
