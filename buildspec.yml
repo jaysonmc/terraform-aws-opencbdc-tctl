@@ -13,4 +13,5 @@ phases:
       - terraform version
   pre_build:
     commands:
+      - terraform init --reconfigure      
       - terraform plan -var "test_controller_github_access_token=$github_token"
