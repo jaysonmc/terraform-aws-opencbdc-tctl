@@ -14,6 +14,7 @@ phases:
   pre_build:
     commands:
       - terraform init --reconfigure      
-      - export TF_VAR_environment="test"
-      - export TF_VAR_lets_encrypt_email="dccanive@amazon.com"
+      - export TF_VAR_environment=$environment
+      - export TF_VAR_lets_encrypt_email=$lets_encrypt_email
+      - export TF_VAR_dns_base_domain=$dns_base_domain
       - terraform plan -var "test_controller_github_access_token=$github_token"
