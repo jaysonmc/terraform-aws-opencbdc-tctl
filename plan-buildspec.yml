@@ -10,18 +10,18 @@ phases:
       - unzip terraform.zip
       - mv terraform /usr/local/bin/
       - terraform version
-  pre_build:
+  build:
     commands:
       - terraform init
-      #- export TF_VAR_environment=$environment
-      #- export TF_VAR_lets_encrypt_email=$lets_encrypt_email
-      #- export TF_VAR_base_domain=$dns_base_domain
-      #- export TF_VAR_test_controller_github_access_token=$github_token
-      #- export TF_VAR_ec2_public_key=$ec2_public_key
-      #- export TF_VAR_requester_vpc_id=$requester_vpc_id
-      #- export TF_VAR_accepter_vpc_id=$accepter_vpc_id
-      #- export TF_VAR_testruns_efs_id=$accepter_vpc_id
-      #- export TF_VAR_certs_efs_id=$accepter_vpc_id
-      #- export TF_VAR_binaries_efs_id=$accepter_vpc_id
-      - terraform plan -out ./tf-test.plan
+      - export TF_VAR_environment=$environment
+      - export TF_VAR_lets_encrypt_email=$lets_encrypt_email
+      - export TF_VAR_base_domain=$dns_base_domain
+      - export TF_VAR_test_controller_github_access_token=$github_token
+      - export TF_VAR_ec2_public_key=$ec2_public_key
+      - export TF_VAR_requester_vpc_id=$requester_vpc_id
+      - export TF_VAR_accepter_vpc_id=$accepter_vpc_id
+      - export TF_VAR_testruns_efs_id=$accepter_vpc_id
+      - export TF_VAR_certs_efs_id=$accepter_vpc_id
+      - export TF_VAR_binaries_efs_id=$accepter_vpc_id
+      - terraform plan -out ./tf-test.plan -var lets_encrypt_email=$lets_encrypt_email
       - aws s3 cp ./tf-test.plan $s3_terraform_plan
