@@ -20,5 +20,8 @@ phases:
       - export TF_VAR_ec2_public_key=$ec2_public_key
       - export TF_VAR_requester_vpc_id=$requester_vpc_id
       - export TF_VAR_accepter_vpc_id=$accepter_vpc_id
+      - export TF_VAR_testruns_efs_id=$accepter_vpc_id
+      - export TF_VAR_certs_efs_id=$accepter_vpc_id
+      - export TF_VAR_binaries_efs_id=$accepter_vpc_id
       - terraform plan -out ./tf-test.plan
       - aws s3 cp ./tf-test.plan $s3_terraform_plan
