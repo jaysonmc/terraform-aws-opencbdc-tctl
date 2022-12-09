@@ -6,7 +6,6 @@ env:
 phases:
   install:
     commands:
-      - ls
       - aws s3 cp $s3_terraform terraform.zip
       - unzip terraform.zip
       - mv terraform /usr/local/bin/
