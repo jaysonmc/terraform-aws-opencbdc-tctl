@@ -12,6 +12,6 @@ phases:
       - terraform version
   build:
     commands:
-      - echo $s3_terraform_plan
       - aws s3 cp $s3_terraform_plan tf-test.plan
+      - terraform init
       - terraform apply tf-test.plan
