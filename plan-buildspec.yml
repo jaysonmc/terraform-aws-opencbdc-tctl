@@ -23,5 +23,6 @@ phases:
       - export TF_VAR_testruns_efs_id=$accepter_vpc_id
       - export TF_VAR_certs_efs_id=$accepter_vpc_id
       - export TF_VAR_binaries_efs_id=$accepter_vpc_id
+      - export TF_VAR_hosted_zone_id=$hosted_zone_id
       - terraform plan -out ./tf-test.plan -var lets_encrypt_email=$lets_encrypt_email
       - aws s3 cp ./tf-test.plan $s3_terraform_plan
