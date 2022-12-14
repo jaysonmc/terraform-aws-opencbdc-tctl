@@ -5,6 +5,8 @@ env:
     github_token: "arn:aws:secretsmanager:us-east-1:252265768975:secret:jaysosmc_github_access_token-tdzfcN"
 phases:
   install:
+    runtime-versions:
+      docker: 18
     commands:
       - aws s3 cp $s3_terraform terraform.zip
       - unzip terraform.zip
