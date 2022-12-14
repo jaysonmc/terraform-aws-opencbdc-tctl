@@ -16,7 +16,6 @@ phases:
       - terraform version
   build:
     commands:
-      - docker run hello-world
       - aws s3 cp $s3_terraform_plan tf-test.plan
       - mkdir builds
       - terraform init
