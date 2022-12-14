@@ -8,12 +8,15 @@ phases:
     runtime-versions:
       docker: 20
     commands:
+      - nohup /usr/local/bin/dockerd --host=unix:///var/run/docker.sock --host=tcp://127.0.0.1:2375 --storage-driver=overlay2&
+      - timeout 15 sh -c "until docker info; do echo .; sleep 1;
       - aws s3 cp $s3_terraform terraform.zip
       - unzip terraform.zip
       - mv terraform /usr/local/bin/
       - terraform version
   build:
     commands:
+      - docker run hello-world
       - aws s3 cp $s3_terraform_plan tf-test.plan
       - mkdir builds
       - terraform init
