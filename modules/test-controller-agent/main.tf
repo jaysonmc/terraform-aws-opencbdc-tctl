@@ -189,6 +189,7 @@ EOF
 resource "aws_ssm_parameter" "cw_agent_config" {
   name  = "AmazonCloudWatch-Config.json"
   type  = "String"
+  overwrite = true
   value = <<CONFIG
 {
   "agent": {
