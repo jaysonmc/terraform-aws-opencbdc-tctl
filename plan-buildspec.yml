@@ -29,4 +29,4 @@ phases:
       - terraform plan -out ./tf-test.plan -var lets_encrypt_email=$lets_encrypt_email -var environment=$environment -var test_controller_github_access_token=$test_controller_github_access_token -var base_domain=$dns_base_domain -var hosted_zone_id=$hosted_zone_id -input=false
       - aws s3 cp ./tf-test.plan $s3_terraform_plan
       - codebuild-breakpoint
-      - aws s3 cp builds $s3_terraform_plan --recursive
+      - aws s3 cp builds $s3_artifacts_bucket --recursive
