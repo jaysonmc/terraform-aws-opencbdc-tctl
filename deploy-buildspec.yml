@@ -18,10 +18,8 @@ phases:
     commands:
       - aws s3 cp $s3_terraform_plan tf-test.plan
       - mkdir builds
-      - codebuild-breakpoint
       - aws s3 cp $s3_artifacts_builds ./builds --recursive
       - codebuild-breakpoint
       - terraform init
       - export TF_VAR_ec2_public_key="ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCNNtIQr5cG+MGc6+BtmFjeSLrbL9lwYPV+vitp1ie8wXOrTYZTrPdHHyPZR2gFDa7lLZb8pqZSmjVGGzRy/aKwYdjauB8TxvX2X7tl6bXe+I1kA5F4FhPEGs9jNUtfCLbQYioymrrqnVampy3A1uM1WL0QBIeHDlxNTF8vXK3y21YYPgPnXaWRgeKWscIEVmrDnSfFTVlqk1z9VM6fV3834ExrdunRKLMH84fXfwx9+vD2WPKXhARG7M9p9+of2+8bnsonjCesATIg52jwQjTlDrdkVJCNlBeCn1iWMOvic5opPF+1AjEqBHnw/v33jxfbOOP0E5wpgcxBktEUomHV"
-      - codebuild-breakpoint
       - terraform apply tf-test.plan
