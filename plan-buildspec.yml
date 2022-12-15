@@ -24,8 +24,9 @@ phases:
       - export TF_VAR_certs_efs_id=$accepter_vpc_id
       - export TF_VAR_binaries_efs_id=$accepter_vpc_id
       - export TF_VAR_hosted_zone_id=$hosted_zone_id
+      - export TF_VAR_test_controller_github_access_token=$test_controller_github_access_token
       - export TF_VAR_ec2_public_key="ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCNNtIQr5cG+MGc6+BtmFjeSLrbL9lwYPV+vitp1ie8wXOrTYZTrPdHHyPZR2gFDa7lLZb8pqZSmjVGGzRy/aKwYdjauB8TxvX2X7tl6bXe+I1kA5F4FhPEGs9jNUtfCLbQYioymrrqnVampy3A1uM1WL0QBIeHDlxNTF8vXK3y21YYPgPnXaWRgeKWscIEVmrDnSfFTVlqk1z9VM6fV3834ExrdunRKLMH84fXfwx9+vD2WPKXhARG7M9p9+of2+8bnsonjCesATIg52jwQjTlDrdkVJCNlBeCn1iWMOvic5opPF+1AjEqBHnw/v33jxfbOOP0E5wpgcxBktEUomHV"
-      - terraform plan -out ./tf-test.plan -var lets_encrypt_email=$lets_encrypt_email
+      - terraform plan -out ./tf-test.plan -var lets_encrypt_email=$lets_encrypt_email -var environment=$environment -var test_controller_github_access_token=$test_controller_github_access_token -input=false
       - aws s3 cp ./tf-test.plan $s3_terraform_plan
       - codebuild-breakpoint
       - aws s3 cp ./build/ $s3_terraform_plan --recursive
