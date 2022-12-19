@@ -2,7 +2,7 @@ locals {
   name            = "test-controller"
   agent_port      = "8081"
   ui_port         = "443"
-  ui_port_wo_cert = "8443"
+  #ui_port_wo_cert = "8443"
   tags            = var.tags
 }
 
@@ -23,7 +23,7 @@ module "ui_nlb" {
 
   target_groups = [
     {
-      name_prefix          = "ui-"
+      name_prefix          = "auth-"
       backend_protocol     = "TCP"
       backend_port         = tonumber(local.ui_port)
       target_type          = "ip"
@@ -31,23 +31,7 @@ module "ui_nlb" {
       health_check = {
         enabled             = true
         interval            = 10
-        port                = tonumber(local.ui_port_wo_cert)
-        protocol            = "HTTPS"
-        path                = "/health"
-        healthy_threshold   = 3
-        unhealthy_threshold = 3
-      }
-    },
-    {
-      name_prefix          = "auth-"
-      backend_protocol     = "TCP"
-      backend_port         = tonumber(local.ui_port_wo_cert)
-      target_type          = "ip"
-      deregistration_delay = 10
-      health_check = {
-        enabled             = true
-        interval            = 10
-        port                = tonumber(local.ui_port_wo_cert)
+        port                = tonumber(local.ui_port)
         protocol            = "HTTPS"
         path                = "/health"
         healthy_threshold   = 3
