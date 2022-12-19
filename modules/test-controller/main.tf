@@ -45,11 +45,6 @@ module "ui_nlb" {
       port               = tonumber(local.ui_port)
       protocol           = "TCP"
       target_group_index = 0
-    },
-    {
-      port               = tonumber(local.ui_port_wo_cert)
-      protocol           = "TCP"
-      target_group_index = 1
     }
   ]
 
@@ -79,7 +74,7 @@ module "nlb" {
       health_check = {
         enabled             = true
         interval            = 10
-        port                = tonumber(local.ui_port_wo_cert)
+        port                = tonumber(local.agent_port)
         protocol            = "HTTPS"
         path                = "/health"
         healthy_threshold   = 3
@@ -160,12 +155,6 @@ resource "aws_ecs_service" "service" {
     container_name   = local.name
     container_port   = tonumber(local.ui_port)
     target_group_arn = module.ui_nlb.target_group_arns[0]
-  }
-
-  load_balancer {
-    container_name   = local.name
-    container_port   = tonumber(local.ui_port_wo_cert)
-    target_group_arn = module.ui_nlb.target_group_arns[1]
   }
 
   load_balancer {
@@ -258,10 +247,6 @@ resource "aws_ecs_task_definition" "task" {
         "value": "${local.ui_port}"
       },
       {
-        "name": "HTTPS_WITHOUT_CLIENT_CERT_PORT",
-        "value": "${local.ui_port_wo_cert}"
-      },
-      {
         "name": "PORT",
         "value": "${local.agent_port}"
       },
@@ -289,9 +274,6 @@ resource "aws_ecs_task_definition" "task" {
     "portMappings": [
       {
         "containerPort": ${tonumber(local.ui_port)}
-      },
-      {
-        "containerPort": ${tonumber(local.ui_port_wo_cert)}
       },
       {
         "containerPort": ${tonumber(local.agent_port)}
