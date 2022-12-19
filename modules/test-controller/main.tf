@@ -101,7 +101,7 @@ resource "aws_route53_record" "ui_nlb" {
   name    = "${local.name}.${var.dns_base_domain}"
   type    = "A"
   alias {
-    name                   = "${local.name}.${var.dns_base_domain}" // TO-DO Manage CF through Terraform and reference
+    name                   = "d1on210zoo4za8.cloudfront.net." // TO-DO Manage CF through Terraform and reference
     zone_id                = var.hosted_zone_id
     evaluate_target_health = true
   }
