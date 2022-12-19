@@ -45,8 +45,12 @@ locals {
 resource "aws_cloudfront_distribution" "cdn" {
   origin {
     domain_name               = data.aws_s3_bucket.build_bucket.bucket_regional_domain_name
-    origin_access_control_id  = aws_cloudfront_origin_access_control.default.id
+    #origin_access_control_id  = aws_cloudfront_origin_access_control.default.id
     origin_id                 = local.s3_origin_id
+
+    s3_origin_config {
+      origin_access_identity = aws_cloudfront_origin_access_identity.default.cloudfront_access_identity_path
+    }
   }
 
   custom_error_response {
