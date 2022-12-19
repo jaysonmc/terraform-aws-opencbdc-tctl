@@ -52,9 +52,6 @@ resource "aws_cloudfront_distribution" "cdn" {
     }   
   }
 
-  ssl_support_method = "sni-only"
-  minimum_protocol_version = "TLSv1"
-
   # If using route53 aliases for DNS we need to declare it here too, otherwise we'll get 403s.
   aliases = ["test-controller.${var.dns_base_domain}"] // TO-DO pull test-controller from var instead of hard coding
 
@@ -92,7 +89,9 @@ resource "aws_cloudfront_distribution" "cdn" {
   }
 
   viewer_certificate {
-    acm_certificate_arn = "arn:aws:acm:us-east-1:252265768975:certificate/76b4657f-1a64-4588-aeab-e6a8fdc3d6df" // TO-DO remove hard coded ARN
+    acm_certificate_arn       = "arn:aws:acm:us-east-1:252265768975:certificate/76b4657f-1a64-4588-aeab-e6a8fdc3d6df" // TO-DO remove hard coded ARN
+    ssl_support_method        = "sni-only"
+    minimum_protocol_version  = "TLSv1"
   }
 }
 
