@@ -13,6 +13,10 @@ variable "cert_arn" {
   description = "A custom ACM cert arn to use; only valid when create_networking is false."
   default = ""
 }
+variable "s3_build_bucket" {
+  type        = string
+  description = "S3 bucket where the react build folder exists."
+}
 
 #EC2
 variable "ec2_public_key" {
