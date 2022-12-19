@@ -44,7 +44,7 @@ locals {
 
 resource "aws_cloudfront_distribution" "cdn" {
   origin {
-    domain_name               = aws_s3_bucket.build_bucket.bucket_regional_domain_name
+    domain_name               = data.aws_s3_bucket.build_bucket.bucket_regional_domain_name
     origin_id                 = local.s3_origin_id
   }
 
@@ -96,7 +96,7 @@ resource "aws_cloudfront_distribution" "cdn" {
 data "aws_iam_policy_document" "s3_policy" {
   statement {
     actions   = ["s3:GetObject"]
-    resources = ["${aws_s3_bucket.build_bucket.arn}/*"]
+    resources = ["${data.aws_s3_bucket.build_bucket.arn}/*"]
 
     principals {
       type        = "AWS"
@@ -106,12 +106,12 @@ data "aws_iam_policy_document" "s3_policy" {
 }
 
 resource "aws_s3_bucket_policy" "mybucket" {
-  bucket = aws_s3_bucket.build_bucket.id
+  bucket = data.aws_s3_bucket.build_bucket.id
   policy = data.aws_iam_policy_document.s3_policy.json
 }
 
 resource "aws_s3_bucket_public_access_block" "mybucket" {
-  bucket = aws_s3_bucket.build_bucket.id
+  bucket = data.aws_s3_bucket.build_bucket.id
 
   block_public_acls       = true
   block_public_policy     = true
