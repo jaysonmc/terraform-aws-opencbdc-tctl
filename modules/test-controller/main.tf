@@ -99,9 +99,14 @@ module "nlb" {
 resource "aws_route53_record" "ui_nlb" {
   zone_id = var.hosted_zone_id
   name    = "${local.name}.${var.dns_base_domain}"
-  type    = "CNAME"
+  type    = "A"
   ttl     = "5"
-  records = [ module.ui_nlb.this_lb_dns_name ]
+  #records = [ module.ui_nlb.this_lb_dns_name ]
+  alias {
+    name                   = "${local.name}.${var.dns_base_domain}" // TO-DO Manage CF through Terraform and reference
+    zone_id                = var.hosted_zone_id
+    evaluate_target_health = true
+  }
 }
 
 # Create CNAMES for load balancers
