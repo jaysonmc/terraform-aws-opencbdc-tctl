@@ -52,6 +52,12 @@ resource "aws_cloudfront_distribution" "cdn" {
     }   
   }
 
+  custom_error_response {
+    error_code          = 403
+    response_code       = 200
+    response_page_path  = "index.html"  
+  }
+
   # If using route53 aliases for DNS we need to declare it here too, otherwise we'll get 403s.
   aliases = ["test-controller.${var.dns_base_domain}"] // TO-DO pull test-controller from var instead of hard coding
 
