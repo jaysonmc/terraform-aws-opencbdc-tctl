@@ -34,7 +34,7 @@ resource "aws_cloudfront_origin_access_identity" "origin_access_identity" {
   comment = "jaysosmc-opencbdc-react-build.s3.us-east-1.amazonaws.com"
 }
 
-data "aws_s3_bucket" "build_bucket" {
+import "aws_s3_bucket" "build_bucket" {
   bucket = "${var.s3_build_bucket}"
 }
 
