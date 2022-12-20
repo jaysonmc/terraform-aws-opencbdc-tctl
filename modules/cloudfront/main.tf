@@ -11,26 +11,28 @@ resource "aws_s3_bucket" "build_bucket" {
   )
 }
 
-resource "aws_s3_bucket_acl" "b_acl" {
-  bucket = aws_s3_bucket.build_bucket.id
-  acl    = "private"
+data "aws_iam_policy_document" "build_bucket" {
+  statement {
+    actions = ["s3:GetObject"]
+    principals {
+      type        = "AWS"
+      identifiers = ["${aws_cloudfront_origin_access_identity.origin_access_identity.iam_arn}"]
+    }
+    resources = ["${aws_s3_bucket.build_bucket.arn}/*"]
+  }
+}
+
+resource "aws_s3_bucket_policy" "build_bucket" {
+  bucket = "${aws_s3_bucket.build_bucket.id}"
+  policy = "${data.aws_iam_policy_document.build_bucket.json}"
 }
 
 resource "aws_cloudfront_distribution" "cdn" {
   origin {
-    domain_name               = aws_s3_bucket.build_bucket.bucket_regional_domain_name
-    #origin_access_control_id  = aws_cloudfront_origin_access_control.default.id
-    origin_id = "S3-${aws_s3_bucket.build_bucket.bucket}"
-
-    custom_origin_config {
-      http_port = 80
-      https_port = 443
-      origin_protocol_policy = "match-viewer"
-      origin_ssl_protocols = ["TLSv1", "TLSv1.1", "TLSv1.2"]
-    }
-
+    domain_name = "${aws_s3_bucket.build_bucket.bucket_regional_domain_name}"
+    origin_id   = "web_distribution_origin"
     s3_origin_config {
-      origin_access_identity = aws_cloudfront_origin_access_identity.origin_access_identity.cloudfront_access_identity_path
+      origin_access_identity = "${aws_cloudfront_origin_access_identity.origin_access_identity.cloudfront_access_identity_path}"
     }
   }
 
