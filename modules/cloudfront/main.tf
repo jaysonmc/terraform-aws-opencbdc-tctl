@@ -97,12 +97,12 @@ data "aws_iam_policy_document" "s3_policy" {
 }
 
 resource "aws_s3_bucket_policy" "mybucket" {
-  bucket = data.aws_s3_bucket.build_bucket.id
-  policy = data.aws_iam_policy_document.s3_policy.json
+  bucket = aws_s3_bucket.build_bucket.id
+  policy = aws_iam_policy_document.s3_policy.json
 }
 
 resource "aws_s3_bucket_public_access_block" "mybucket" {
-  bucket = data.aws_s3_bucket.build_bucket.id
+  bucket = aws_s3_bucket.build_bucket.id
 
   block_public_acls       = true
   block_public_policy     = true
