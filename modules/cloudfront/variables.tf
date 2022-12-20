@@ -13,3 +13,13 @@ variable "dns_base_domain" {
   type        = string
   description = "DNS Zone name to be used for ACM cert creation."
 }
+
+variable "dns_prefix" {
+  type = string
+  description = "Test controller name"
+}
+
+variable "hosted_zone_id" {
+  type = string
+  description = "DNS zone hosted ID"
+}
