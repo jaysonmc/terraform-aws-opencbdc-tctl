@@ -98,7 +98,7 @@ data "aws_iam_policy_document" "s3_policy" {
 
 resource "aws_s3_bucket_policy" "mybucket" {
   bucket = aws_s3_bucket.build_bucket.id
-  policy = aws_iam_policy_document.s3_policy.json
+  policy = data.aws_iam_policy_document.s3_policy.json
 }
 
 resource "aws_s3_bucket_public_access_block" "mybucket" {
