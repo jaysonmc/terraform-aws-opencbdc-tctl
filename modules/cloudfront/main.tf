@@ -122,7 +122,7 @@ resource "aws_route53_record" "cloudfront" {
   type    = "A"
   alias {
     name                   = aws_cloudfront_distribution.cdn.domain_name
-    zone_id                = aws_s3_bucket.build_bucket.hosted_zone_id
+    zone_id                = aws_cloudfront_distribution.cdn.hosted_zone_id
     evaluate_target_health = true
   }
 
