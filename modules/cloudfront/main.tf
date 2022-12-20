@@ -118,7 +118,7 @@ resource "aws_s3_bucket_public_access_block" "mybucket" {
 # Create alias for CloudFront
 resource "aws_route53_record" "cloudfront" {
   zone_id = var.hosted_zone_id
-  name    = "${local.name}.${var.dns_base_domain}"
+  name    = "${var.name}.${var.dns_base_domain}"
   type    = "A"
   alias {
     name                   = aws_cloudfront_distribution.cdn.domain_name

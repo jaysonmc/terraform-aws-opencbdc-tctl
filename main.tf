@@ -6,6 +6,8 @@ locals {
   }
   tags = merge(var.resource_tags, local.required_tags)
 
+  test_controller_name = module.test_controller_service.test_controller_name
+
   # ids
   vpc_id_use1 = var.create_networking ? module.vpc[0].vpc_id : var.vpc_id_use1
   vpc_id_use2 = var.create_networking ? module.vpc_use2[0].vpc_id : var.vpc_id_use2
@@ -705,9 +707,11 @@ module "cloudfront" {
 
   source = "./modules/cloudfront"
 
-  s3_build_bucket = var.s3_build_bucket
-  dns_base_domain = var.base_domain
-  tags = local.tags
+  hosted_zone_id    = local.hosted_zone_id
+  s3_build_bucket   = var.s3_build_bucket
+  dns_base_domain   = var.base_domain
+  tags              = local.tags
+  name              = local.test_controller_name
 }
 
 ################################
