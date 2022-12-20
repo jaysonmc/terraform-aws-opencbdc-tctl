@@ -158,5 +158,4 @@ variable "certbot_lambda_build_in_docker" {
 variable "cloudfront_address" {
   type = string
   description = "Domain of CloudFront distribution"
-  default = ""
 }
