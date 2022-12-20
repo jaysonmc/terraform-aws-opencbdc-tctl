@@ -299,9 +299,6 @@ resource "aws_ecs_task_definition" "task" {
     %{ else }%{ endif }
     "portMappings": [
       {
-        "containerPort": ${tonumber(local.ui_port)}
-      },
-      {
         "containerPort": ${tonumber(local.ui_port_wo_cert)}
       },
       {
