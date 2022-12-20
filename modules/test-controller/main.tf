@@ -41,7 +41,7 @@ module "ui_nlb" {
     {
       name_prefix          = "auth-"
       backend_protocol     = "TCP"
-      backend_port         = tonumber(local.ui_port_wo_cert)
+      backend_port         = tonumber(local.ui_port)
       target_type          = "ip"
       deregistration_delay = 10
       health_check = {
@@ -175,7 +175,7 @@ resource "aws_ecs_service" "service" {
 
   load_balancer {
     container_name   = local.name
-    container_port   = tonumber(local.ui_port)
+    container_port   = tonumber(local.ui_port_wo_cert)
     target_group_arn = module.ui_nlb.target_group_arns[0]
   }
 
