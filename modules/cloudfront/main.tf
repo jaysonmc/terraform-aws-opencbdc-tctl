@@ -6,10 +6,9 @@ resource "aws_cloudfront_origin_access_identity" "origin_access_identity" {
 resource "aws_s3_bucket" "build_bucket" {
   bucket = "${var.s3_build_bucket}"
 
-  tags = {
-    Name        = "${var.s3_build_bucket}"
-    ManagedBy   = "Terraform"
-  }
+  tags = merge(
+    var.tags
+  )
 }
 
 resource "aws_s3_bucket_acl" "b_acl" {

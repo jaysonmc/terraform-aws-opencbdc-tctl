@@ -699,9 +699,16 @@ module "route53_dns" {
   source = "./modules/route53_dns"
 
   dns_base_domain = var.base_domain
-  s3_build_bucket = var.s3_build_bucket
-
+  
   # Tags
+  tags = local.tags
+}
+
+module "cloudfront" {
+
+  source = "./modules/cloudfront"
+
+  s3_build_bucket = var.s3_build_bucket
   tags = local.tags
 }
 
