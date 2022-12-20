@@ -13,10 +13,6 @@ variable "cert_arn" {
   description = "A custom ACM cert arn to use; only valid when create_networking is false."
   default = ""
 }
-variable "s3_build_bucket" {
-  type        = string
-  description = "S3 bucket where the react build folder exists."
-}
 
 #EC2
 variable "ec2_public_key" {
@@ -310,6 +306,15 @@ variable "cloudfront_address" {
   type = string
   description = "Domain of CloudFront distribution"
   default = ""
+}
+variable "create_cf" {
+  type = string
+  description = "Flag to create VPCs and related resources"
+  default = true
+}
+variable "s3_build_bucket" {
+  type        = string
+  description = "S3 bucket where the react build folder exists."
 }
 
 # Seed Generator

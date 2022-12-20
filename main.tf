@@ -41,7 +41,7 @@ locals {
   cert_arn       = var.create_networking ? module.route53_dns[0].cert_arn : var.cert_arn
 
   # CloudFront
-  cloudfront_address = var.cloudfront_address ? module.cloudfront.cloudfront_address : var.cloudfront_address
+  cloudfront_address = var.cloudfront_address ? module.cloudfront[0].cloudfront_address : var.cloudfront_address
 }
 
 # get the current aws region
