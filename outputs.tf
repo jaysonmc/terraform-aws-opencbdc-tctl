@@ -80,7 +80,7 @@ output "route53_endpoints" {
     value = {
         name_servers        = try(module.route53_dns[0].name_servers, "")
         bastion             = module.bastion.bastion_enpoint
-        ui_endpoint         = module.test_controller_service.ui_endpoint
+        ui_endpoint         = module.cloudfront.ui_endpoint
         agent_endpoint      = module.test_controller_service.agent_endpoint
         opensearch_endpoint = var.create_opensearch ? module.opensearch[0].opensearch_endpoint : ""
     }
