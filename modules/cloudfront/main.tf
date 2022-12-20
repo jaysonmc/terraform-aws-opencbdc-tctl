@@ -16,10 +16,6 @@ resource "aws_s3_bucket_acl" "b_acl" {
   acl    = "private"
 }
 
-locals {
-  s3_origin_id = "opencbdcS3OriginID"
-}
-
 resource "aws_cloudfront_distribution" "cdn" {
   origin {
     domain_name               = aws_s3_bucket.build_bucket.bucket_regional_domain_name
