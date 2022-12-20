@@ -22,22 +22,22 @@ module "ui_nlb" {
   subnets = var.public_subnets
 
   target_groups = [
-    # {
-    #   name_prefix          = "ui-"
-    #   backend_protocol     = "TCP"
-    #   backend_port         = tonumber(local.ui_port)
-    #   target_type          = "ip"
-    #   deregistration_delay = 10
-    #   health_check = {
-    #     enabled             = true
-    #     interval            = 10
-    #     port                = tonumber(local.ui_port_wo_cert)
-    #     protocol            = "HTTPS"
-    #     path                = "/health"
-    #     healthy_threshold   = 3
-    #     unhealthy_threshold = 3
-    #   }
-    # },
+    {
+      name_prefix          = "ui-"
+      backend_protocol     = "TCP"
+      backend_port         = tonumber(local.ui_port)
+      target_type          = "ip"
+      deregistration_delay = 10
+      health_check = {
+        enabled             = true
+        interval            = 10
+        port                = tonumber(local.ui_port_wo_cert)
+        protocol            = "HTTPS"
+        path                = "/health"
+        healthy_threshold   = 3
+        unhealthy_threshold = 3
+      }
+    },
     {
       name_prefix          = "auth-"
       backend_protocol     = "TCP"
@@ -176,7 +176,7 @@ resource "aws_ecs_service" "service" {
   load_balancer {
     container_name   = local.name
     container_port   = tonumber(local.ui_port_wo_cert)
-    target_group_arn = module.ui_nlb.target_group_arns[0]
+    target_group_arn = module.ui_nlb.target_group_arns[1]
   }
 
   load_balancer {
@@ -298,6 +298,9 @@ resource "aws_ecs_task_definition" "task" {
     ],
     %{ else }%{ endif }
     "portMappings": [
+      {
+        "containerPort": ${tonumber(local.ui_port)}
+      },
       {
         "containerPort": ${tonumber(local.ui_port_wo_cert)}
       },
