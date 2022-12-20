@@ -2,7 +2,7 @@ locals {
   name            = "test-controller"
   agent_port      = "8081"
   ui_port         = "443"
-  #ui_port_wo_cert = "8443"
+  ui_port_wo_cert = "8443"
   tags            = var.tags
 }
 
@@ -74,7 +74,7 @@ module "nlb" {
       health_check = {
         enabled             = true
         interval            = 10
-        port                = tonumber(local.agent_port)
+        port                = tonumber(local.ui_port_wo_cert)
         protocol            = "HTTPS"
         path                = "/health"
         healthy_threshold   = 3
@@ -236,6 +236,10 @@ resource "aws_ecs_task_definition" "task" {
         "value": "${local.ui_port}"
       },
       {
+        "name": "HTTPS_WITHOUT_CLIENT_CERT_PORT",
+        "value": "${local.ui_port_wo_cert}"
+      },
+      {
         "name": "PORT",
         "value": "${local.agent_port}"
       },
@@ -263,6 +267,9 @@ resource "aws_ecs_task_definition" "task" {
     "portMappings": [
       {
         "containerPort": ${tonumber(local.ui_port)}
+      },
+      {
+        "containerPort": ${tonumber(local.ui_port_wo_cert)}
       },
       {
         "containerPort": ${tonumber(local.agent_port)}
