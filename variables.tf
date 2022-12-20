@@ -305,6 +305,12 @@ variable "fire_hose_index_rotation_period" {
   default = "OneDay"
 }
 
+# CloudFormation
+variable "cloudfront_address" {
+  type = string
+  description = "Domain of CloudFront distribution"
+  default = ""
+}
 
 # Seed Generator
 variable "create_uhs_seed_generator" {
