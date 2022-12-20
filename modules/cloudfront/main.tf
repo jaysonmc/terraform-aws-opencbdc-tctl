@@ -80,14 +80,14 @@ resource "aws_cloudfront_distribution" "cdn" {
   }
   
   depends_on = [
-    data.aws_s3_bucket.build_bucket
+    aws_s3_bucket.build_bucket
   ]
 }
 
 data "aws_iam_policy_document" "s3_policy" {
   statement {
     actions   = ["s3:GetObject"]
-    resources = ["${data.aws_s3_bucket.build_bucket.arn}/*"]
+    resources = ["${aws_s3_bucket.build_bucket.arn}/*"]
 
     principals {
       type        = "AWS"

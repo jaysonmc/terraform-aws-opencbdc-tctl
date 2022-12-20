@@ -8,3 +8,8 @@ variable "tags" {
   description = "Tags to set for all resources"
   default     = {}
 }
+
+variable "dns_base_domain" {
+  type        = string
+  description = "DNS Zone name to be used for ACM cert creation."
+}
