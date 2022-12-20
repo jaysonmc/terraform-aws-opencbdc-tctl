@@ -154,3 +154,9 @@ variable "certbot_lambda_build_in_docker" {
   description = "Determines whether or not to build certbot lambda function in docker."
   default     = true
 }
+
+variable "cloudfront_address" {
+  type = string
+  description = "Domain of CloudFront distribution"
+  default = ""
+}
