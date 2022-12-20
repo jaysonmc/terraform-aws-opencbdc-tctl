@@ -39,9 +39,6 @@ locals {
   # Route53
   hosted_zone_id = var.create_networking ? module.route53_dns[0].hosted_zone_id : var.hosted_zone_id
   cert_arn       = var.create_networking ? module.route53_dns[0].cert_arn : var.cert_arn
-
-  # CloudFront
-  cloudfront_address = module.cloudfront.cloudfront_address
 }
 
 # get the current aws region
@@ -522,7 +519,7 @@ module "test_controller_service" {
   uhs_seed_generator_job_definiton_arn      = module.uhs_seed_generator[0].job_definiton_arn
   uhs_seed_generator_job_queue_arn          = module.uhs_seed_generator[0].job_queue_arn
   certbot_lambda_build_in_docker            = var.lambda_build_in_docker
-
+  
   # Tags
   tags = local.tags
 }

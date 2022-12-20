@@ -94,19 +94,6 @@ module "nlb" {
   tags = local.tags
 }
 
-
-# Create CNAMES for load balancers
-resource "aws_route53_record" "ui_nlb" {
-  zone_id = var.hosted_zone_id
-  name    = "${local.name}.${var.dns_base_domain}"
-  type    = "A"
-  alias {
-    name                   = var.cloudfront_address
-    zone_id                = var.hosted_zone_id
-    evaluate_target_health = true
-  }
-}
-
 # Create CNAMES for load balancers
 resource "aws_route53_record" "nlb" {
   zone_id = var.hosted_zone_id
@@ -115,7 +102,6 @@ resource "aws_route53_record" "nlb" {
   ttl     = "5"
   records = [ module.nlb.this_lb_dns_name ]
 }
-
 
 ## ECS Service
 
