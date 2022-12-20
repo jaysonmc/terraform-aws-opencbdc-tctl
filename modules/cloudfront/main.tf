@@ -30,7 +30,7 @@ resource "aws_s3_bucket_policy" "build_bucket" {
 resource "aws_cloudfront_distribution" "cdn" {
   origin {
     domain_name = "${aws_s3_bucket.build_bucket.bucket_regional_domain_name}"
-    origin_id   = "web_distribution_origin"
+    origin_id   = "S3-${aws_s3_bucket.build_bucket.bucket}"
     s3_origin_config {
       origin_access_identity = "${aws_cloudfront_origin_access_identity.origin_access_identity.cloudfront_access_identity_path}"
     }
@@ -85,7 +85,8 @@ resource "aws_cloudfront_distribution" "cdn" {
   }
   
   depends_on = [
-    aws_s3_bucket.build_bucket
+    aws_s3_bucket.build_bucket,
+    aws_cloudfront_origin_access_identity.origin_access_identity
   ]
 }
 
