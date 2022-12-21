@@ -96,7 +96,7 @@ resource "aws_cloudfront_distribution" "cdn" {
   depends_on = [
     aws_s3_bucket.build_bucket,
     aws_cloudfront_origin_access_identity.origin_access_identity,
-    aws_lb.auth_nlb
+    data.aws_lb.auth_nlb
   ]
 }
 
