@@ -28,7 +28,8 @@ resource "aws_s3_bucket_policy" "build_bucket" {
 }
 
 data "aws_lb" "auth_nlb" {
-  name = "${dns_prefix}-ui-nlb"
+  #name = "${dns_prefix}-ui-nlb"
+  name = "test-controller-ui-nlb"
 }
 
 resource "aws_cloudfront_distribution" "cdn" {
@@ -95,7 +96,8 @@ resource "aws_cloudfront_distribution" "cdn" {
   
   depends_on = [
     aws_s3_bucket.build_bucket,
-    aws_cloudfront_origin_access_identity.origin_access_identity
+    aws_cloudfront_origin_access_identity.origin_access_identity,
+    aws_lb.auth_nlb
   ]
 }
 
