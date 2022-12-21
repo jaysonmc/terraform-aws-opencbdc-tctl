@@ -41,7 +41,7 @@ module "ui_nlb" {
     {
       name_prefix          = "auth-"
       backend_protocol     = "TCP"
-      backend_port         = tonumber(local.ui_port)
+      backend_port         = tonumber(local.ui_port_wo_cert)
       target_type          = "ip"
       deregistration_delay = 10
       health_check = {
@@ -161,17 +161,11 @@ resource "aws_ecs_service" "service" {
   # Track the latest ACTIVE revision
   task_definition = "${aws_ecs_task_definition.task.family}:${max(aws_ecs_task_definition.task.revision, data.aws_ecs_task_definition.task.revision)}"
 
-  #load_balancer {
-  #  container_name   = local.name
-  #  container_port   = tonumber(local.ui_port)
-  #  target_group_arn = module.ui_nlb.target_group_arns[0]
-  #}
-
-  #load_balancer {
-  #  container_name   = local.name
-  #  container_port   = tonumber(local.ui_port_wo_cert)
-  #  target_group_arn = module.ui_nlb.target_group_arns[1]
-  #}
+  load_balancer {
+    container_name   = local.name
+    container_port   = tonumber(local.ui_port)
+    target_group_arn = module.ui_nlb.target_group_arns[0]
+  }
 
   load_balancer {
     container_name   = local.name
