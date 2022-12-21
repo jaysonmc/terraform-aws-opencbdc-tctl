@@ -28,8 +28,7 @@ resource "aws_s3_bucket_policy" "build_bucket" {
 }
 
 data "aws_lb" "auth_nlb" {
-  #name = "${dns_prefix}-ui-nlb"
-  name = "test-controller-ui-nlb"
+  name = "${var.dns_prefix}-ui-nlb"
 }
 
 resource "aws_cloudfront_distribution" "cdn" {
