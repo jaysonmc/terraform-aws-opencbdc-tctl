@@ -27,6 +27,10 @@ resource "aws_s3_bucket_policy" "build_bucket" {
   policy = "${data.aws_iam_policy_document.build_bucket.json}"
 }
 
+data "aws_lb" "auth_nlb" {
+  name = "${dns_prefix}-ui-nlb"
+}
+
 resource "aws_cloudfront_distribution" "cdn" {
   origin {
     domain_name = "${aws_s3_bucket.build_bucket.bucket_regional_domain_name}"
@@ -34,6 +38,11 @@ resource "aws_cloudfront_distribution" "cdn" {
     s3_origin_config {
       origin_access_identity = "${aws_cloudfront_origin_access_identity.origin_access_identity.cloudfront_access_identity_path}"
     }
+  }
+
+  origin {
+    domain_name = data.aws_lb.auth_nlb.dns_name
+    origin_id   = data.aws_lb.auth_nlb.dns_name
   }
 
   custom_error_response {

@@ -707,11 +707,11 @@ module "cloudfront" {
 
   source = "./modules/cloudfront"
 
-  hosted_zone_id    = local.hosted_zone_id
-  s3_build_bucket   = var.s3_build_bucket
-  dns_base_domain   = var.base_domain
-  tags              = local.tags
-  dns_prefix        = local.test_controller_name
+  hosted_zone_id        = local.hosted_zone_id
+  s3_build_bucket       = var.s3_build_bucket
+  dns_base_domain       = var.base_domain
+  tags                  = local.tags
+  dns_prefix            = local.test_controller_name
 }
 
 ################################
