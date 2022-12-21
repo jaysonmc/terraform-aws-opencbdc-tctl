@@ -44,8 +44,8 @@ resource "aws_cloudfront_distribution" "cdn" {
     domain_name = data.aws_lb.auth_nlb.dns_name
     origin_id   = data.aws_lb.auth_nlb.dns_name
     custom_origin_config {
-      https_port               = "8443" // TO-DO pull from test-controller module
-      origin_protocol_policy  = "http-only"
+      https_port              = "8443" // TO-DO pull from test-controller module
+      origin_protocol_policy  = "https-only"
       origin_ssl_protocols    = ["SSLv3", "TLSv1", "TLSv1.1", "TLSv1.2"]
     }
   }
