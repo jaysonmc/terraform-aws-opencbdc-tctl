@@ -82,6 +82,28 @@ resource "aws_cloudfront_distribution" "cdn" {
     compress               = true
   }
 
+  ordered_cache_behavior {
+    path_pattern     = "/auth"
+    allowed_methods  = ["GET", "HEAD", "OPTIONS", "PUT", "POST", "PATCH", "DELETE"]
+    cached_methods   = ["GET", "HEAD", "OPTIONS"]
+    target_origin_id = data.aws_lb.auth_nlb.dns_name
+
+    forwarded_values {
+      query_string = false
+      #headers      = ["Origin"]
+
+      cookies {
+        forward = "none"
+      }
+    }
+
+    min_ttl                = 0
+    default_ttl            = 86400
+    max_ttl                = 31536000
+    compress               = true
+    viewer_protocol_policy = "redirect-to-https"
+  }
+
   # The cheapest priceclass
   price_class = "PriceClass_100"
 
