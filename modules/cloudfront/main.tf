@@ -120,6 +120,12 @@ resource "aws_cloudfront_distribution" "cdn" {
   #  ssl_support_method        = "sni-only"
   #  minimum_protocol_version  = "TLSv1"
   #}
+
+  ## Start with default cert, and replace in cloudfront_addcert module (to avoid cycle with route53 module)
+  viewer_certificate {
+    cloudfront_default_certificate = true
+  }
+
   
   depends_on = [
     aws_s3_bucket.build_bucket,
