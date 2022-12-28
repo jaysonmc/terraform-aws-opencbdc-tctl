@@ -114,12 +114,6 @@ resource "aws_cloudfront_distribution" "cdn" {
       locations        = ["US", "CA"]
     }
   }
-
-  viewer_certificate {
-    acm_certificate_arn       = var.cert_arn
-    ssl_support_method        = "sni-only"
-    minimum_protocol_version  = "TLSv1"
-  }
   
   depends_on = [
     aws_s3_bucket.build_bucket,
