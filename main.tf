@@ -720,7 +720,7 @@ module "cloudfront_addcert" {
 
   source = "./modules/cloudfront_addcert"
 
-  cert_arn              = module.route53_dns.cert_arn
+  cert_arn              = var.cert_arn
   cloudfront_id         = module.cloudfront.cloudfront_id
   dns_base_domain       = var.base_domain
 }
