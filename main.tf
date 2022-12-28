@@ -39,8 +39,8 @@ locals {
   s3_interface_endpoint_usw2 = var.create_networking ? module.vpc_endpoints_usw2[0].s3_interface_endpoint : var.s3_interface_endpoint_usw2
 
   # Route53
-  hosted_zone_id = var.create_networking || !var.hosted_zone_id ? module.route53_dns[0].hosted_zone_id : var.hosted_zone_id
-  cert_arn       = var.create_networking || !var.cert_arn ? module.route53_dns[0].cert_arn : var.cert_arn
+  hosted_zone_id = var.create_networking ? module.route53_dns[0].hosted_zone_id : var.hosted_zone_id
+  cert_arn       = var.create_networking ? module.route53_dns[0].cert_arn : var.cert_arn
 }
 
 # get the current aws region
