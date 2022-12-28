@@ -9,7 +9,5 @@ phases:
       - terraform version
   build:
     commands:
-      - aws s3 cp $s3_terraform_plan tf-test.plan
-      - mkdir builds
       - terraform init
-      - terraform destroy tf-test.plan
+      - terraform destroy
