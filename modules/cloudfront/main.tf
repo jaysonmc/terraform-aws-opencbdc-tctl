@@ -116,7 +116,7 @@ resource "aws_cloudfront_distribution" "cdn" {
   }
 
   viewer_certificate {
-    acm_certificate_arn       = "arn:aws:acm:us-east-1:252265768975:certificate/76b4657f-1a64-4588-aeab-e6a8fdc3d6df" // TO-DO remove hard coded ARN
+    acm_certificate_arn       = var.cert_arn
     ssl_support_method        = "sni-only"
     minimum_protocol_version  = "TLSv1"
   }

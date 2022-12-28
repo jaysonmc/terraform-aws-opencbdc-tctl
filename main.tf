@@ -697,7 +697,8 @@ module "route53_dns" {
 
   source = "./modules/route53_dns"
 
-  dns_base_domain = var.base_domain
+  dns_base_domain   = var.base_domain
+  cloudfront_domain = module.cloudfront.cloudfront_address
   
   # Tags
   tags = local.tags
