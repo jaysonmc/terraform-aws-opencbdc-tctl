@@ -23,3 +23,9 @@ variable "hosted_zone_id" {
   type = string
   description = "DNS zone hosted ID"
 }
+
+variable "cert_arn" {
+  type = string
+  description = "ACM Cert ARN (to create alternate name)"
+}
+
