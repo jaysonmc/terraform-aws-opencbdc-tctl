@@ -13,3 +13,9 @@ variable "tags" {
   description = "Tags to set for all resources"
   default     = {}
 }
+
+variable "cloudfront_domain" {
+  type        = string
+  description = "ARN of ACM certificate"
+}
+
