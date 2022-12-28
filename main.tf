@@ -713,6 +713,7 @@ module "cloudfront" {
   dns_base_domain       = var.base_domain
   tags                  = local.tags
   dns_prefix            = local.test_controller_name
+  cert_arn              = module.route53_dns.cert_arn
 }
 
 ################################
