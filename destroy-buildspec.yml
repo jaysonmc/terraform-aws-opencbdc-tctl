@@ -1,0 +1,17 @@
+version: 0.2
+
+phases:
+  install:
+    commands:
+      - aws s3 cp $s3_terraform terraform.zip
+      - unzip terraform.zip
+      - mv terraform /usr/local/bin/
+      - terraform version
+  build:
+    commands:
+      - aws s3 cp $s3_terraform_plan tf-test.plan
+      - mkdir builds
+      - aws s3 cp $s3_artifacts_builds ./builds --recursive
+      - terraform init
+      - terraform destroy tf-test.plan
+      # - aws lambda invoke --region us-east-1 --function-name test-controller-certbot-lambda /dev/stdout // run manually after build (keeps generating more certs if part of build)
