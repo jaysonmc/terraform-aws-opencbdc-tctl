@@ -18,11 +18,7 @@ phases:
       - export TF_VAR_base_domain=$dns_base_domain
       - export TF_VAR_test_controller_github_access_token=$github_token
       - export TF_VAR_ec2_public_key=$ec2_public_key
-      - export TF_VAR_requester_vpc_id=$requester_vpc_id
-      - export TF_VAR_accepter_vpc_id=$accepter_vpc_id
-      #- export TF_VAR_testruns_efs_id=$accepter_vpc_id
-      #- export TF_VAR_certs_efs_id=$accepter_vpc_id
-      #- export TF_VAR_binaries_efs_id=$accepter_vpc_id
+      - export TF_VAR_cert_arn=$cert_arn
       - export TF_VAR_hosted_zone_id=$hosted_zone_id
       - export TF_VAR_s3_build_bucket=$s3_build_bucket
       - export TF_VAR_test_controller_github_access_token=$test_controller_github_access_token

@@ -713,7 +713,14 @@ module "cloudfront" {
   dns_base_domain       = var.base_domain
   tags                  = local.tags
   dns_prefix            = local.test_controller_name
+}
+
+module "cloudfront_addcert" {
+
+  source = "./modules/cloudfront_addcert"
+
   cert_arn              = module.route53_dns.cert_arn
+  cloudfront_id         = module.cloudfront.cloudfront_id
 }
 
 ################################
