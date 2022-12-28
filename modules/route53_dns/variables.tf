@@ -14,7 +14,7 @@ variable "tags" {
   default     = {}
 }
 
-variable "cloudfront_domain" {
+variable "cert_arn" {
   type        = string
   description = "ARN of ACM certificate"
 }
