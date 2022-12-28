@@ -13,9 +13,3 @@ variable "tags" {
   description = "Tags to set for all resources"
   default     = {}
 }
-
-variable "cert_arn" {
-  type        = string
-  description = "ARN of ACM certificate"
-}
-
