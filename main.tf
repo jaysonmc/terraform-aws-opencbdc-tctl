@@ -40,7 +40,7 @@ locals {
 
   # Route53
   hosted_zone_id = var.create_networking ? module.route53_dns[0].hosted_zone_id : var.hosted_zone_id
-  cert_arn       = var.create_networking ? module.route53_dns[0].cert_arn : var.cert_arn
+  cert_arn       = (var.create_networking || !var.cert_arn) ? module.route53_dns[0].cert_arn : var.cert_arn
 }
 
 # get the current aws region
@@ -719,14 +719,14 @@ module "cloudfront" {
   cert_arn              = var.cert_arn
 }
 
-module "cloudfront_addcert" {
+# module "cloudfront_addcert" {
 
-  source = "./modules/cloudfront_addcert"
+#   source = "./modules/cloudfront_addcert"
 
-  cert_arn              = var.cert_arn
-  cloudfront_id         = module.cloudfront.cloudfront_id
-  dns_base_domain       = var.base_domain
-}
+#   cert_arn              = var.cert_arn
+#   cloudfront_id         = module.cloudfront.cloudfront_id
+#   dns_base_domain       = var.base_domain
+# }
 
 ################################
 #### Bastion Host ##############

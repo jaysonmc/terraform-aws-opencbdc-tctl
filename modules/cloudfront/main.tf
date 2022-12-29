@@ -58,7 +58,7 @@ resource "aws_cloudfront_distribution" "cdn" {
   }
 
   # If using route53 aliases for DNS we need to declare it here too, otherwise we'll get 403s.
-  # aliases = ["test-controller.${var.dns_base_domain}"] 
+  aliases = ["test-controller.${var.dns_base_domain}"] 
 
   enabled             = true
   default_root_object = "index.html"
@@ -115,18 +115,17 @@ resource "aws_cloudfront_distribution" "cdn" {
     }
   }
 
-  #viewer_certificate {
-  #  acm_certificate_arn       = var.cert_arn
-  #  ssl_support_method        = "sni-only"
-  #  minimum_protocol_version  = "TLSv1"
-  #}
-
-  ## Start with default cert, and replace in cloudfront_addcert module (to avoid cycle with route53 module)
   viewer_certificate {
-    cloudfront_default_certificate = true
+    acm_certificate_arn       = var.cert_arn
+    ssl_support_method        = "sni-only"
+    minimum_protocol_version  = "TLSv1"
   }
 
-  
+  ## Start with default cert, and replace in cloudfront_addcert module (to avoid cycle with route53 module)
+  #viewer_certificate {
+  #  cloudfront_default_certificate = true
+  #}
+
   depends_on = [
     aws_s3_bucket.build_bucket,
     aws_cloudfront_origin_access_identity.origin_access_identity,

@@ -53,5 +53,5 @@ output "test_controller_name" {
 }
 
 output "ui_nlb" {
-  value       = module.ui_nlb.name
+  value       = "${local.name}-ui-nlb"
 }
