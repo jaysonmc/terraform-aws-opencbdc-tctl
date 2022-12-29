@@ -40,7 +40,7 @@ locals {
 
   # Route53
   hosted_zone_id = var.create_networking ? module.route53_dns[0].hosted_zone_id : var.hosted_zone_id
-  cert_arn       = (var.create_networking || !var.cert_arn) ? module.route53_dns[0].cert_arn : var.cert_arn
+  cert_arn       = (var.create_networking || try(var.cert_arn, true)) ? module.route53_dns[0].cert_arn : var.cert_arn
 }
 
 # get the current aws region
