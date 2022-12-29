@@ -699,6 +699,9 @@ module "route53_dns" {
 
   dns_base_domain   = var.base_domain
   cloudfront_domain = module.cloudfront.cloudfront_address
+  ui_nlb            = module.test_controller_service.ui_nlb
+  hosted_zone_id    = local.hosted_zone_id
+  dns_prefix        = local.test_controller_name
   
   # Tags
   tags = local.tags
