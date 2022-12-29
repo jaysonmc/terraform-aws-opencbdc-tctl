@@ -51,3 +51,7 @@ output "ecs_service_name" {
 output "test_controller_name" {
   value       = local.name
 }
+
+output "ui_nlb" {
+  value       = module.ui_nlb.name
+}

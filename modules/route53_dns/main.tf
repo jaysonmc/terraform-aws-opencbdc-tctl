@@ -6,7 +6,7 @@ data "aws_route53_zone" "base_domain" {
 # ACM
 resource "aws_acm_certificate" "domain_cert" {
   domain_name               = var.dns_base_domain
-  subject_alternative_names = ["*.${var.dns_base_domain}", "${var.cloudfront_domain}"]
+  subject_alternative_names = ["*.${var.dns_base_domain}"]
   validation_method         = "DNS"
 
   tags = merge(
@@ -23,6 +23,18 @@ resource "aws_route53_record" "domain_cert_validation_dns" {
   zone_id = data.aws_route53_zone.base_domain.id
   records = [tolist(aws_acm_certificate.domain_cert.domain_validation_options)[0].resource_record_value]
   ttl     = 60
+}
+
+# Create alias for UI NLB
+resource "aws_route53_record" "nlb" {
+  zone_id = var.hosted_zone_id
+  name    = "auth.${var.dns_prefix}.${var.dns_base_domain}"
+  type    = "A"
+  alias {
+    name                   = var.ui_nlb
+    zone_id                = var.ui_nlb
+    evaluate_target_health = true
+  }
 }
 
 resource "aws_acm_certificate_validation" "domain_cert_validation" {
