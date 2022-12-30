@@ -170,6 +170,6 @@ resource "aws_route53_record" "cloudfront" {
   }
 
   depends_on = [
-    aws_cloudfront_distribution.cdn
+    aws_cloudfront_distribution.cdn,
   ]
 }

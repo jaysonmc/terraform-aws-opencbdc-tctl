@@ -719,6 +719,10 @@ module "cloudfront" {
   tags                  = local.tags
   dns_prefix            = local.test_controller_name
   cert_arn              = var.cert_arn
+
+  depends_on = [
+    test_controller_service.aws_ecs_service
+  ]
 }
 
 # module "cloudfront_addcert" {
