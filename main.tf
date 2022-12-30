@@ -721,7 +721,7 @@ module "cloudfront" {
   cert_arn              = var.cert_arn
 
   depends_on = [
-    test_controller_service
+    module.test_controller_service
   ]
 }
 
