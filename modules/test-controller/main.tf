@@ -115,6 +115,14 @@ module "nlb" {
   tags = local.tags
 }
 
+resource "aws_route53_record" "ui_nlb" {
+  zone_id = var.hosted_zone_id
+  name    = "auth.${local.name}.${var.dns_base_domain}"
+  type    = "CNAME"
+  ttl     = "5"
+  records = [ module.ui_nlb.this_lb_dns_name ]
+}
+
 # Create CNAMES for load balancers
 resource "aws_route53_record" "nlb" {
   zone_id = var.hosted_zone_id
@@ -725,7 +733,7 @@ module "certbot_lambda" {
   vpc_security_group_ids = [ module.certbot_security_group[0].this_security_group_id ]
 
   environment_variables = {
-    LETSENCRYPT_DOMAINS  = "${local.name}.${var.dns_base_domain}"
+    LETSENCRYPT_DOMAINS  = ["${local.name}.${var.dns_base_domain}", "auth.${local.name}.${var.dns_base_domain}"]
     LETSENCRYPT_EMAIL    = var.lets_encrypt_email
     EFS_ACCESS_POINT_PATH = "/mnt/certs"
   }

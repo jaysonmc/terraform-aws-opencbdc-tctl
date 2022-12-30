@@ -25,18 +25,6 @@ resource "aws_route53_record" "domain_cert_validation_dns" {
   ttl     = 60
 }
 
-# Create alias for UI NLB
-resource "aws_route53_record" "nlb" {
-  zone_id = var.hosted_zone_id
-  name    = "auth.${var.dns_prefix}.${var.dns_base_domain}"
-  type    = "A"
-  alias {
-    name                   = var.ui_nlb
-    zone_id                = var.ui_nlb
-    evaluate_target_health = true
-  }
-}
-
 resource "aws_acm_certificate_validation" "domain_cert_validation" {
   certificate_arn         = aws_acm_certificate.domain_cert.arn
   validation_record_fqdns = [aws_route53_record.domain_cert_validation_dns.fqdn]
