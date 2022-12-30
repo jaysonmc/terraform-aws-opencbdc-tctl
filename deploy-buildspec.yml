@@ -1,0 +1,25 @@
+version: 0.2
+
+env:
+  secrets-manager:
+    github_token: "arn:aws:secretsmanager:us-east-1:252265768975:secret:jaysosmc_github_access_token-tdzfcN"
+phases:
+  install:
+    runtime-versions:
+      docker: 20
+    commands:
+      - nohup /usr/local/bin/dockerd --host=unix:///var/run/docker.sock --host=tcp://127.0.0.1:2375 --storage-driver=overlay2&
+      - timeout 15 sh -c "until docker info; do echo .; sleep 1; done"
+      - aws s3 cp $s3_terraform terraform.zip
+      - unzip terraform.zip
+      - mv terraform /usr/local/bin/
+      - terraform version
+  build:
+    commands:
+      - aws s3 cp $s3_terraform_plan tf-test.plan
+      - mkdir builds
+      - aws s3 cp $s3_artifacts_builds ./builds --recursive
+      - terraform init
+      - export TF_VAR_ec2_public_key="ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCNNtIQr5cG+MGc6+BtmFjeSLrbL9lwYPV+vitp1ie8wXOrTYZTrPdHHyPZR2gFDa7lLZb8pqZSmjVGGzRy/aKwYdjauB8TxvX2X7tl6bXe+I1kA5F4FhPEGs9jNUtfCLbQYioymrrqnVampy3A1uM1WL0QBIeHDlxNTF8vXK3y21YYPgPnXaWRgeKWscIEVmrDnSfFTVlqk1z9VM6fV3834ExrdunRKLMH84fXfwx9+vD2WPKXhARG7M9p9+of2+8bnsonjCesATIg52jwQjTlDrdkVJCNlBeCn1iWMOvic5opPF+1AjEqBHnw/v33jxfbOOP0E5wpgcxBktEUomHV"
+      - terraform apply tf-test.plan
+      # - aws lambda invoke --region us-east-1 --function-name test-controller-certbot-lambda /dev/stdout // run manually after build (keeps generating more certs if part of build)
