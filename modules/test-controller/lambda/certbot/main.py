@@ -18,7 +18,8 @@ def provision_cert(email, domains):
     '--agree-tos',                          # Agree to the terms of service,
     '--email', email,                       # Email
     '--dns-route53',                        # Use dns challenge with route53
-    '-d', domains,                          # Domains to provision certs for
+    '-d', domains[0],                          # Domains to provision certs for
+    '-d', domains[1],                          # Domains to provision certs for (auth logical sub)
     # Override directory paths so script doesn't have to be run as root
     '--config-dir', '/tmp/config-dir/',
     '--work-dir', '/tmp/work-dir/',
@@ -119,7 +120,7 @@ def upload_cert_to_acm(cert, domains):
 def handler(event, context):
   print("Starting cert update process...")
   try:
-    domains = os.environ['LETSENCRYPT_DOMAINS']
+    domains = os.environ['LETSENCRYPT_DOMAINS'].split(',')
     if should_provision(domains):
       cert = provision_cert(os.environ['LETSENCRYPT_EMAIL'], domains)
       upload_cert_to_acm(cert, domains)
