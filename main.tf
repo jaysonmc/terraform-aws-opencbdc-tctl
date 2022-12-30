@@ -721,18 +721,9 @@ module "cloudfront" {
   cert_arn              = var.cert_arn
 
   depends_on = [
-    test_controller_service.aws_ecs_service
+    test_controller_service
   ]
 }
-
-# module "cloudfront_addcert" {
-
-#   source = "./modules/cloudfront_addcert"
-
-#   cert_arn              = var.cert_arn
-#   cloudfront_id         = module.cloudfront.cloudfront_id
-#   dns_base_domain       = var.base_domain
-# }
 
 ################################
 #### Bastion Host ##############
