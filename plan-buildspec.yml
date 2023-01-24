@@ -22,6 +22,5 @@ phases:
       - export TF_VAR_hosted_zone_id=$hosted_zone_id
       - export TF_VAR_s3_build_bucket=$s3_build_bucket
       - export TF_VAR_test_controller_github_access_token=$test_controller_github_access_token
-      - export TF_VAR_ec2_public_key=""
       - terraform plan -out ./tf-test.plan -var lets_encrypt_email=$lets_encrypt_email -var environment=$environment -var test_controller_github_access_token=$test_controller_github_access_token -var base_domain=$base_domain -var hosted_zone_id=$hosted_zone_id -input=false 
       - aws s3 cp ./tf-test.plan $s3_terraform_plan
