@@ -4,8 +4,8 @@ import { Construct } from 'constructs';
 
 export class CdkStack extends cdk.Stack {
   
-  readonly githubAccessToken: string;
-  readonly paramRegion: string;
+  readonly secretName: string;
+  readonly region: string;
   
   constructor(scope: Construct, id: string, props?: cdk.StackProps) {
     super(scope, id, props);
@@ -22,7 +22,7 @@ export class CdkStack extends cdk.Stack {
       default: "us-east-1",
     });
     
-    this.githubAccessToken = githubAccessToken.valueAsString;
-    this.paramRegion = region.valueAsString
+    this.secretName = githubAccessToken.valueAsString;
+    this.region = region.valueAsString
   }
 }

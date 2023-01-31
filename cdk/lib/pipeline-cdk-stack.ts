@@ -7,7 +7,7 @@ import * as codebuild from "aws-cdk-lib/aws-codebuild";
 import * as sm from "aws-cdk-lib/aws-secretsmanager";
 
 export interface ConsumerProps extends StackProps {
-   token: string
+   secretName: string
 }
 
 export class PipelineStack extends Stack {
@@ -18,10 +18,15 @@ export class PipelineStack extends Stack {
     const branch = 'trunk';
     const gitHubUsernameRepository = ' jaysonmc/terraform-aws-opencbdc-tctl';
     
+    const secret = sm.Secret.fromSecretAttributes(this, "ImportedSecret", {
+      secretCompleteArn:
+        `arn:aws:secretsmanager:${props.env?.region}:${props.env?.account}:secret:${props.secretName}`
+    });
+    
     const codeBuildSource = new codebuild.GitHubSourceCredentials(
       this,
       "CodeBuildGitHub",
-      { accessToken: SecretValue.secretsManager(props.token)}
+      { accessToken: secret.secretValue }
     );
     
     const pipeline = new codepipeline.Pipeline(this, "cdk-cbdcdeploy", {
