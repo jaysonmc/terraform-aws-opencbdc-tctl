@@ -4,8 +4,8 @@ import { Construct } from 'constructs';
 
 export class CdkStack extends cdk.Stack {
   
-  readonly githubAccessToken: String;
-  readonly paramRegion: String;
+  readonly githubAccessToken: string;
+  readonly paramRegion: string;
   
   constructor(scope: Construct, id: string, props?: cdk.StackProps) {
     super(scope, id, props);
