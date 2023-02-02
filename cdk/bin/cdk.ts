@@ -8,7 +8,7 @@ const app = new cdk.App();
 
 const cdkStack = new CdkStack(app, "generic-stack", {})
 
-const env  = { account: '252265768975', region: cdkStack.region };
+const env  = { region: cdkStack.region };
 
 const pipeline = new PipelineStack(app, "pipeline-stack", {
   env: env,
