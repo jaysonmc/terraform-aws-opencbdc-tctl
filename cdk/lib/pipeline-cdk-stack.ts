@@ -22,11 +22,13 @@ export class PipelineStack extends Stack {
         `arn:aws:secretsmanager:${process.env?.region}:${this.account}:secret:${githubToken}-${process.env.github_access_token_suffix}`
     });
     
+    /*
     const codeBuildSource = new codebuild.GitHubSourceCredentials(
       this,
       "CodeBuildGitHub",
       { accessToken: secret.secretValue }
     );
+    */
     
     const terraformPlan = new codebuild.PipelineProject(
       this,
@@ -96,7 +98,7 @@ export class PipelineStack extends Stack {
           output: sourceOutput,
           owner: repoOwner,
           repo: "terraform-aws-opencbdc-tctl'",
-          oauthToken: SecretValue.plainText(githubToken),
+          oauthToken: SecretValue.secretsManager(githubToken),
           trigger: codepipeline_actions.GitHubTrigger.WEBHOOK
         })
       ]
