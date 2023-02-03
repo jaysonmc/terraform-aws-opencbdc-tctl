@@ -12,11 +12,14 @@ export class PipelineStack extends Stack {
     super(scope, id, props);
     
     const branch = 'trunk';
-    const gitHubUsernameRepository = ' jaysonmc/terraform-aws-opencbdc-tctl';
+    const sourceOutput = new codepipeline.Artifact("SrcOutput");
+    const planOutput = new codepipeline.Artifact();
+    const githubToken = process.env.github_access_token ? process.env.github_access_token : ""
+    const repoOwner = process.env.repo_owner ? process.env.repo_owner : ""
     
     const secret = sm.Secret.fromSecretAttributes(this, "ImportedSecret", {
       secretCompleteArn:
-        `arn:aws:secretsmanager:${props.env?.region}:${props.env?.account}:secret:${process.env.github_access_token}-${process.env.github_access_token_suffix}`
+        `arn:aws:secretsmanager:${props.env?.region}:${props.env?.account}:secret:${githubToken}-${process.env.github_access_token_suffix}`
     });
     
     const codeBuildSource = new codebuild.GitHubSourceCredentials(
@@ -24,11 +27,6 @@ export class PipelineStack extends Stack {
       "CodeBuildGitHub",
       { accessToken: secret.secretValue }
     );
-    
-    const pipeline = new codepipeline.Pipeline(this, "cdk-cbdcdeploy", {
-      pipelineName: "cdk-cbdcdeploy",
-      crossAccountKeys: false,
-    });
     
     const terraformPlan = new codebuild.PipelineProject(
       this,
@@ -84,5 +82,37 @@ export class PipelineStack extends Stack {
         }
       }
     );
+    
+    const pipeline = new codepipeline.Pipeline(this, "cdk-cbdcdeploy", {
+      pipelineName: "cdk-cbdcdeploy",
+      crossAccountKeys: false,
+    });
+    
+    pipeline.addStage({
+      stageName: "getSources",
+      actions: [
+        new codepipeline_actions.GitHubSourceAction({
+          actionName: "GetGitHubTerraformSource",
+          output: sourceOutput,
+          owner: repoOwner,
+          repo: "terraform-aws-opencbdc-tctl'",
+          oauthToken: SecretValue.plainText(githubToken),
+          trigger: codepipeline_actions.GitHubTrigger.WEBHOOK
+        })
+      ]
+    })
+    
+    pipeline.addStage({
+      stageName: "Plan",
+      actions: [
+        new codepipeline_actions.CodeBuildAction({
+          actionName: "TerraformPlan",
+          project: terraformPlan,
+          input: sourceOutput,
+          outputs: [planOutput],
+        }),
+      ],
+    });
+    
   }
 }
