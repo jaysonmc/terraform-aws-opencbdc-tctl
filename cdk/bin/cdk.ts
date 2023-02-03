@@ -5,4 +5,8 @@ import { PipelineStack } from '../lib/pipeline-cdk-stack';
 
 const app = new cdk.App();
 
-const pipeline = new PipelineStack(app, "pipeline-stack", {})
+const pipeline = new PipelineStack(app, "pipeline-stack", {
+    env: {
+        region: process.env.region
+    }
+})

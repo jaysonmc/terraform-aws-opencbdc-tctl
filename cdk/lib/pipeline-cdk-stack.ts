@@ -19,7 +19,7 @@ export class PipelineStack extends Stack {
     
     const secret = sm.Secret.fromSecretAttributes(this, "ImportedSecret", {
       secretCompleteArn:
-        `arn:aws:secretsmanager:${props.env?.region}:${props.env?.account}:secret:${githubToken}-${process.env.github_access_token_suffix}`
+        `arn:aws:secretsmanager:${process.env?.region}:${this.account}:secret:${githubToken}-${process.env.github_access_token_suffix}`
     });
     
     const codeBuildSource = new codebuild.GitHubSourceCredentials(
