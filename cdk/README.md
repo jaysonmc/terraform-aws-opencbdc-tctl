@@ -24,3 +24,8 @@ The `cdk.json` file tells the CDK Toolkit how to execute your app.
 - base_domain
 - lets\_encrypt\_email
 - s3_terraform
+- 
+
+# Manual configuration steps
+
+1. Create GitHub connection (connection id required as env var)

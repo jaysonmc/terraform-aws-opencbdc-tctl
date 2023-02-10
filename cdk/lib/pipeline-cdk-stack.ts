@@ -22,14 +22,6 @@ export class PipelineStack extends Stack {
         `arn:aws:secretsmanager:${process.env?.region}:${this.account}:secret:${githubToken}-${process.env.github_access_token_suffix}`
     });
     
-    /*
-    const codeBuildSource = new codebuild.GitHubSourceCredentials(
-      this,
-      "CodeBuildGitHub",
-      { accessToken: secret.secretValue }
-    );
-    */
-    
     const terraformPlan = new codebuild.PipelineProject(
       this,
       "TerraformPlan",
@@ -93,13 +85,13 @@ export class PipelineStack extends Stack {
     pipeline.addStage({
       stageName: "getSources",
       actions: [
-        new codepipeline_actions.GitHubSourceAction({
+        new codepipeline_actions.CodeStarConnectionsSourceAction({
           actionName: "GetGitHubTerraformSource",
           output: sourceOutput,
           owner: repoOwner,
-          repo: "terraform-aws-opencbdc-tctl'",
-          oauthToken: SecretValue.secretsManager(githubToken),
-          trigger: codepipeline_actions.GitHubTrigger.WEBHOOK
+          branch: 'trunk',
+          repo: "terraform-aws-opencbdc-tctl",
+          connectionArn: `arn:aws:codestar-connections:${process.env.region}:${this.account}:connection/${process.env.codestar_connectionid}`,
         })
       ]
     })
