@@ -76,6 +76,10 @@ export class PipelineStack extends Stack {
           region: {
             type: codebuild.BuildEnvironmentVariableType.PLAINTEXT,
             value: process.env.region
+          },
+          branch: {
+            type: codebuild.BuildEnvironmentVariableType.PLAINTEXT,
+            value: process.env.branch
           }
         }
       }
@@ -93,7 +97,7 @@ export class PipelineStack extends Stack {
           actionName: "GetGitHubTerraformSource",
           output: sourceOutput,
           owner: repoOwner,
-          branch: 'trunk',
+          branch: process.env.branch,
           repo: "terraform-aws-opencbdc-tctl",
           connectionArn: `arn:aws:codestar-connections:${process.env.region}:${this.account}:connection/${process.env.codestar_connectionid}`
         })
