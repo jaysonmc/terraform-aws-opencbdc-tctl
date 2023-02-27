@@ -69,6 +69,10 @@ export class PipelineStack extends Stack {
             type: codebuild.BuildEnvironmentVariableType.PLAINTEXT,
             value: process.env.github_access_token
           },
+          access_token_suffix: {
+            type: codebuild.BuildEnvironmentVariableType.PLAINTEXT,
+            value: process.env.github_access_token_suffix
+          },
           region: {
             type: codebuild.BuildEnvironmentVariableType.PLAINTEXT,
             value: process.env.region
@@ -91,7 +95,7 @@ export class PipelineStack extends Stack {
           owner: repoOwner,
           branch: 'trunk',
           repo: "terraform-aws-opencbdc-tctl",
-          connectionArn: `arn:aws:codestar-connections:${process.env.region}:${this.account}:connection/${process.env.codestar_connectionid}`,
+          connectionArn: `arn:aws:codestar-connections:${process.env.region}:${this.account}:connection/${process.env.codestar_connectionid}`
         })
       ]
     })
@@ -108,5 +112,11 @@ export class PipelineStack extends Stack {
       ],
     });
     
+    pipeline.addStage({
+      stageName: "Approval-TF-Plan",
+      actions: [
+        new codepipeline_actions.ManualApprovalAction({actionName: 'Approval-TF-Plan'}),
+      ],
+    })
   }
 }
