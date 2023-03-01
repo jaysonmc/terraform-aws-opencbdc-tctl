@@ -5,6 +5,15 @@ import * as codepipeline_actions from "aws-cdk-lib/aws-codepipeline-actions";
 import { CodeBuildStep, CodePipeline, CodePipelineSource } from 'aws-cdk-lib/pipelines';
 import * as codebuild from "aws-cdk-lib/aws-codebuild";
 import * as sm from "aws-cdk-lib/aws-secretsmanager";
+import {
+  Effect, 
+  ManagedPolicy, 
+  PolicyStatement, 
+  PolicyDocument, 
+  Role, 
+  ServicePrincipal,
+  CompositePrincipal
+} from "aws-cdk-lib/aws-iam";
 
 export class PipelineStack extends Stack {
   
@@ -22,6 +31,17 @@ export class PipelineStack extends Stack {
         `arn:aws:secretsmanager:${process.env?.region}:${this.account}:secret:${githubToken}-${process.env.github_access_token_suffix}`
     });
     
+    const adminRole = new Role(this, 'CustomAdminRole', {
+      assumedBy: new CompositePrincipal(
+        new ServicePrincipal('codebuild.amazonaws.com'),  
+        new ServicePrincipal('codepipeline.amazonaws.com')
+      ),
+      description: 'Demo admin role for deploying Terraform scripts',
+      managedPolicies: [
+        ManagedPolicy.fromManagedPolicyArn(this, 'AdminPolicy', 'arn:aws:iam::aws:policy/AdministratorAccess')
+      ]
+    });
+    
     const terraformPlan = new codebuild.PipelineProject(
       this,
       "TerraformPlan",
@@ -29,9 +49,10 @@ export class PipelineStack extends Stack {
         environment: {
           buildImage: codebuild.LinuxBuildImage.STANDARD_5_0,
           privileged: false,
-          computeType: codebuild.ComputeType.MEDIUM,
+          computeType: codebuild.ComputeType.MEDIUM
         },
         buildSpec: codebuild.BuildSpec.fromSourceFilename("plan-buildspec.yml"),
+        role: adminRole,
         environmentVariables: {
           environment: {
             type: codebuild.BuildEnvironmentVariableType.PLAINTEXT,
@@ -83,11 +104,12 @@ export class PipelineStack extends Stack {
           }
         }
       }
-    );
+    )
     
     const pipeline = new codepipeline.Pipeline(this, "cdk-cbdcdeploy", {
       pipelineName: "cdk-cbdcdeploy",
       crossAccountKeys: false,
+      role: adminRole
     });
     
     pipeline.addStage({
