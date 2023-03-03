@@ -17,7 +17,6 @@ phases:
       - export TF_VAR_lets_encrypt_email=$lets_encrypt_email
       - export TF_VAR_base_domain=$base_domain
       - export TF_VAR_test_controller_github_access_token=$github_token
-      - export TF_VAR_ec2_public_key=$ec2_public_key
       - export TF_VAR_cert_arn=$cert_arn
       - export TF_VAR_hosted_zone_id=$hosted_zone_id
       - export TF_VAR_s3_build_bucket=$s3_build_bucket
