@@ -181,7 +181,7 @@ export class PipelineStack extends Stack {
         new codepipeline_actions.CodeBuildAction({
           actionName: "TerraformApply",
           project: terraformApply,
-          input: planOutput,
+          input: sourceOutput,
           outputs: [applyOutput],
         }),
       ],
