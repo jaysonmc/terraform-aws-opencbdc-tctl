@@ -139,7 +139,15 @@ export class PipelineStack extends Stack {
           account_id: {
             type: codebuild.BuildEnvironmentVariableType.PLAINTEXT,
             value: this.account
-          }
+          },
+          github_access_token: {
+            type: codebuild.BuildEnvironmentVariableType.PLAINTEXT,
+            value: process.env.github_access_token
+          },
+          access_token_suffix: {
+            type: codebuild.BuildEnvironmentVariableType.PLAINTEXT,
+            value: process.env.github_access_token_suffix
+          },
         }
       }
     )
