@@ -87,7 +87,7 @@ export class PipelineStack extends Stack {
             type: codebuild.BuildEnvironmentVariableType.PLAINTEXT,
             value: process.env.cert_arn
           },
-          test_controller_github_access_token: {
+          github_access_token: {
             type: codebuild.BuildEnvironmentVariableType.PLAINTEXT,
             value: process.env.github_access_token
           },
@@ -106,7 +106,7 @@ export class PipelineStack extends Stack {
           account_id: {
             type: codebuild.BuildEnvironmentVariableType.PLAINTEXT,
             value: this.account
-          }
+          },
         }
       }
     )
