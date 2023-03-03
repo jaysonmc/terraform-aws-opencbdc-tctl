@@ -2,7 +2,7 @@ version: 0.2
 
 env:
   secrets-manager:
-    github_token: "arn:aws:secretsmanager:$region:account_id:secret:$github_access_token-$access_token_suffix"
+    github_token: "arn:aws:secretsmanager:$region:$account_id:secret:$github_access_token-$access_token_suffix"
 phases:
   install:
     commands:
