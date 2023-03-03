@@ -148,6 +148,10 @@ export class PipelineStack extends Stack {
             type: codebuild.BuildEnvironmentVariableType.PLAINTEXT,
             value: process.env.github_access_token_suffix
           },
+          region: {
+            type: codebuild.BuildEnvironmentVariableType.PLAINTEXT,
+            value: process.env.region
+          },
         }
       }
     )
