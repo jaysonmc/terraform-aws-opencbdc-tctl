@@ -102,6 +102,10 @@ export class PipelineStack extends Stack {
           branch: {
             type: codebuild.BuildEnvironmentVariableType.PLAINTEXT,
             value: process.env.branch
+          },
+          account_id: {
+            type: codebuild.BuildEnvironmentVariableType.PLAINTEXT,
+            value: this.account
           }
         }
       }
@@ -131,6 +135,10 @@ export class PipelineStack extends Stack {
           s3_artifacts_builds: {
             type: codebuild.BuildEnvironmentVariableType.PLAINTEXT,
             value: process.env.s3_artifacts_builds
+          },
+          account_id: {
+            type: codebuild.BuildEnvironmentVariableType.PLAINTEXT,
+            value: this.account
           }
         }
       }
