@@ -23,6 +23,7 @@ export class PipelineStack extends Stack {
     const branch = 'trunk';
     const sourceOutput = new codepipeline.Artifact("SrcOutput");
     const planOutput = new codepipeline.Artifact();
+    const applyOutput = new codepipeline.Artifact();
     const githubToken = process.env.github_access_token ? process.env.github_access_token : ""
     const repoOwner = process.env.repo_owner ? process.env.repo_owner : ""
     
@@ -106,6 +107,35 @@ export class PipelineStack extends Stack {
       }
     )
     
+    const terraformApply = new codebuild.PipelineProject(
+      this,
+      "TerraformApply",
+      {
+        environment: {
+          buildImage: codebuild.LinuxBuildImage.STANDARD_5_0,
+          privileged: false,
+          computeType: codebuild.ComputeType.MEDIUM
+        },
+        buildSpec: codebuild.BuildSpec.fromSourceFilename("deploy-buildspec.yml"),
+        role: adminRole,
+        environmentVariables: {
+
+          s3_terraform: {
+            type: codebuild.BuildEnvironmentVariableType.PLAINTEXT,
+            value: process.env.s3_terraform
+          },
+          s3_terraform_plan: {
+            type: codebuild.BuildEnvironmentVariableType.PLAINTEXT,
+            value: process.env.s3_terraform_plan
+          },
+          s3_artifacts_builds: {
+            type: codebuild.BuildEnvironmentVariableType.PLAINTEXT,
+            value: process.env.s3_artifacts_builds
+          }
+        }
+      }
+    )
+    
     const pipeline = new codepipeline.Pipeline(this, "cdk-cbdcdeploy", {
       pipelineName: "cdk-cbdcdeploy",
       crossAccountKeys: false,
@@ -144,5 +174,17 @@ export class PipelineStack extends Stack {
         new codepipeline_actions.ManualApprovalAction({actionName: 'Approval-TF-Plan'}),
       ],
     })
+    
+    pipeline.addStage({
+      stageName: "Apply",
+      actions: [
+        new codepipeline_actions.CodeBuildAction({
+          actionName: "TerraformApply",
+          project: terraformApply,
+          input: planOutput,
+          outputs: [applyOutput],
+        }),
+      ],
+    });
   }
 }
