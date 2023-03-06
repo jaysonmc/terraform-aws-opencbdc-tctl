@@ -26,6 +26,7 @@ export class PipelineStack extends Stack {
     const applyOutput = new codepipeline.Artifact();
     const githubToken = process.env.github_access_token ? process.env.github_access_token : ""
     const repoOwner = process.env.repo_owner ? process.env.repo_owner : ""
+    const repo = 'terraform-aws-opencbdc-tctl'
     
     const secret = sm.Secret.fromSecretAttributes(this, "ImportedSecret", {
       secretCompleteArn:
@@ -103,6 +104,14 @@ export class PipelineStack extends Stack {
             type: codebuild.BuildEnvironmentVariableType.PLAINTEXT,
             value: process.env.branch
           },
+          github_repo_owner: {
+            type: codebuild.BuildEnvironmentVariableType.PLAINTEXT,
+            value: repoOwner
+          },
+          github_repo: {
+            type: codebuild.BuildEnvironmentVariableType.PLAINTEXT,
+            value: repo
+          },
           account_id: {
             type: codebuild.BuildEnvironmentVariableType.PLAINTEXT,
             value: this.account
@@ -170,7 +179,7 @@ export class PipelineStack extends Stack {
           output: sourceOutput,
           owner: repoOwner,
           branch: process.env.branch,
-          repo: "terraform-aws-opencbdc-tctl",
+          repo: repo,
           connectionArn: `arn:aws:codestar-connections:${process.env.region}:${this.account}:connection/${process.env.codestar_connectionid}`
         })
       ]
