@@ -4,6 +4,7 @@ env:
   secrets-manager:
     github_token: "arn:aws:secretsmanager:$region:$account_id:secret:$github_access_token-$access_token_suffix"
 phases:
+  install:
     commands:
       - aws s3 cp $s3_terraform terraform.zip
       - unzip terraform.zip
