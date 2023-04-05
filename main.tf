@@ -700,23 +700,3 @@ module "route53_dns" {
   # Tags
   tags = local.tags
 }
-
-################################
-#### Bastion Host ##############
-################################
-
-module "bastion" {
-  source = "./modules/bastion"
-
-  vpc_id          = local.vpc_id_use1
-  public_subnets  = local.public_subnets_use1
-  public_key      = var.ec2_public_key
-  hosted_zone_id  = local.hosted_zone_id
-  certs_efs_id    = module.test_controller_service.certs_efs_id
-  testruns_efs_id = module.test_controller_service.testruns_efs_id
-  binaries_efs_id = module.test_controller_service.binaries_efs_id
-  dns_base_domain = var.base_domain
-
-  # Tags
-  environment = var.environment
-}
