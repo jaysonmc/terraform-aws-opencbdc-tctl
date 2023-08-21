@@ -1,5 +1,5 @@
 terraform {
-  required_version = "= 1.2.1"
+  required_version = "= 1.3.7"
   backend "s3" {
     bucket = "jaysosmc-opencbdc-artifacts"
     key    = "test.tfstate"
